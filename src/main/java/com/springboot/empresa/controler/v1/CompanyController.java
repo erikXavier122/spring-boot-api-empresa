@@ -54,24 +54,11 @@ public class CompanyController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object>deleteRepository(@PathVariable(value = "id")UUID id){
-        Optional<CompanyModel> companyModelOptional = companyService.findById(id);
-        if (!companyModelOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cadastro dessa empresa nao existe!");
-        }
-        companyService.delete(companyModelOptional.get());
-        return ResponseEntity.status(HttpStatus.OK).body("Cadastro da empresa apagado com sucesso.");
+        return ResponseEntity.status(HttpStatus.OK).body(companyService.deleteById(id));
     }
     @PutMapping("/update/{id}")
     public ResponseEntity<Object> updateRepository(@PathVariable(value = "id")UUID id, @RequestBody @Valid CompanyDto companyDto){
-        Optional<CompanyModel> companyModelOptional = companyService.findById(id);
-        if (!companyModelOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nao temos cadastro dessa empresa para atualizar.");
-        }
-        var companyModel = companyModelOptional.get();
-        companyModel.setNome_empresa(companyDto.getNome_empresa());
-        companyModel.setCnpj(companyDto.getCnpj());
-        companyModel.setCep(companyDto.getCep());
-        return ResponseEntity.status(HttpStatus.OK).body("Cadastro da empresa atualizado.");
+        return ResponseEntity.status(HttpStatus.OK).body(companyService.updateById(id,companyDto));
     }
 
 }
