@@ -1,6 +1,6 @@
 package com.springboot.empresa.service;
 
-import com.springboot.empresa.domain.main.v1.CompanyModel;
+import com.springboot.empresa.domain.model.v1.CompanyModel;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,4 +19,6 @@ public interface CompanyService {
     List<CompanyModel> findAll();
 
     Optional<CompanyModel> findByName(String nome_empresa);
+
+    void delete(CompanyModel companyModel);
 }

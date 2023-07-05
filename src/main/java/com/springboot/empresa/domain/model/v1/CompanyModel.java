@@ -1,4 +1,4 @@
-package com.springboot.empresa.domain.main.v1;
+package com.springboot.empresa.domain.model.v1;
 
 
 import jakarta.persistence.*;

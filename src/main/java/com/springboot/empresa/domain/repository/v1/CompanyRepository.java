@@ -1,6 +1,6 @@
 package com.springboot.empresa.domain.repository.v1;
 
-import com.springboot.empresa.domain.main.v1.CompanyModel;
+import com.springboot.empresa.domain.model.v1.CompanyModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
