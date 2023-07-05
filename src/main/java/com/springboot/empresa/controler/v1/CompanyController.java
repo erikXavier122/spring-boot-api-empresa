@@ -52,8 +52,8 @@ public class CompanyController {
         return ResponseEntity.status(HttpStatus.OK).body(companyService.save(companyModel));
     }
 
-    @DeleteMapping("/delete{id}")
-    public ResponseEntity<Object>deleteRepository(@PathVariable(value = "id")UUID id,@RequestBody @Valid CompanyDto companyDto ){
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object>deleteRepository(@PathVariable(value = "id")UUID id){
         Optional<CompanyModel> companyModelOptional = companyService.findById(id);
         if (!companyModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cadastro dessa empresa nao existe!");
