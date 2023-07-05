@@ -1,7 +1,7 @@
 package com.springboot.empresa.controler.v1;
 
 
-import com.springboot.empresa.domain.main.v1.CompanyModel;
+import com.springboot.empresa.domain.model.v1.CompanyModel;
 import com.springboot.empresa.dto.v1.CompanyDto;
 import com.springboot.empresa.service.CompanyService;
 import jakarta.validation.Valid;
@@ -50,6 +50,28 @@ public class CompanyController {
         var companyModel = new CompanyModel();
         BeanUtils.copyProperties(companyDto,companyModel);
         return ResponseEntity.status(HttpStatus.OK).body(companyService.save(companyModel));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object>deleteRepository(@PathVariable(value = "id")UUID id){
+        Optional<CompanyModel> companyModelOptional = companyService.findById(id);
+        if (!companyModelOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cadastro dessa empresa nao existe!");
+        }
+        companyService.delete(companyModelOptional.get());
+        return ResponseEntity.status(HttpStatus.OK).body("Cadastro da empresa apagado com sucesso.");
+    }
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Object> updateRepository(@PathVariable(value = "id")UUID id, @RequestBody @Valid CompanyDto companyDto){
+        Optional<CompanyModel> companyModelOptional = companyService.findById(id);
+        if (!companyModelOptional.isPresent()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nao temos cadastro dessa empresa para atualizar.");
+        }
+        var companyModel = companyModelOptional.get();
+        companyModel.setNome_empresa(companyDto.getNome_empresa());
+        companyModel.setCnpj(companyDto.getCnpj());
+        companyModel.setCep(companyDto.getCep());
+        return ResponseEntity.status(HttpStatus.OK).body("Cadastro da empresa atualizado.");
     }
 
 }

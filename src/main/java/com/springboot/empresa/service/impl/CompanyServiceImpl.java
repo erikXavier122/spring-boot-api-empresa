@@ -1,6 +1,6 @@
 package com.springboot.empresa.service.impl;
 
-import com.springboot.empresa.domain.main.v1.CompanyModel;
+import com.springboot.empresa.domain.model.v1.CompanyModel;
 import com.springboot.empresa.domain.repository.v1.CompanyRepository;
 import com.springboot.empresa.service.CompanyService;
 import jakarta.transaction.Transactional;
@@ -44,6 +44,11 @@ public class CompanyServiceImpl  implements CompanyService {
     @Override
     public Optional<CompanyModel> findByName(String nome_empresa) {
         return companyRepository.findByName(nome_empresa);
+    }
+
+    @Override
+    public void delete(CompanyModel companyModel) {
+
     }
 }
 
