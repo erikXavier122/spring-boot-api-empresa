@@ -50,8 +50,45 @@ public class CompanyServiceImpl  implements CompanyService {
     }
 
     @Override
-    public void delete(CompanyModel companyModel) {
+    public Optional<CompanyModel> findByCnpj(String cnpj) {
+        return companyRepository.findByCnpj(cnpj);
+    }
 
+
+    @Override
+    public void delete(CompanyModel companyModel) {
+        companyRepository.delete(companyModel);
+    }
+
+    @Override
+    public Object deleteById(UUID id) {
+        Optional<CompanyModel> companyModelOptional = findById(id);
+        if (!companyModelOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cadastro dessa empresa nao existe.");
+        }
+        delete(companyModelOptional.get());
+        return "Cadastro da empresa apagado com sucesso.";
+    }
+
+    @Override
+    public Object deleteByNome_empresa(String nome_empresa) {
+        Optional<CompanyModel> companyModelOptional = findByName(nome_empresa);
+        if (!companyModelOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cadastro dessa empresa nao existe.");
+        }
+        delete(companyModelOptional.get());
+        return "Cadastro da empresa apagado com sucesso. ";
+    }
+
+    @Override
+    public Object deleteByCnpj(String cnpj) {
+        Optional<CompanyModel> companyModelOptional= findByCnpj(cnpj);
+        System.out.println(companyModelOptional);
+        if (!companyModelOptional.isPresent()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cadastro dessa empresa nao existe.");
+        }
+        delete(companyModelOptional.get());
+        return "Cadastro da empresa apagado com sucesso.";
     }
 
     @Override
@@ -64,17 +101,29 @@ public class CompanyServiceImpl  implements CompanyService {
         companyModel.setNome_empresa(companyDto.getNome_empresa());
         companyModel.setCnpj(companyDto.getCnpj());
         companyModel.setCep(companyDto.getCep());
-        return "Cadastro da empresa atualizado";
+        return "Cadastro da empresa atualizado.";
     }
 
+    @Transactional
     @Override
-    public Object deleteById(UUID id) {
-        Optional<CompanyModel> companyModelOptional = findById(id);
-        if (!companyModelOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cadastro dessa empresa nao existe!");
+    public Object updateByCnpj(String cnpj, CompanyDto companyDto) {
+        Optional<CompanyModel> companyModelOptional=findByCnpj(cnpj);
+        if (companyModelOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cnpj nao encontrado.");
         }
-        delete(companyModelOptional.get());
-        return "Cadastro da empresa apagado com sucesso.";
+        companyRepository.updateByCnpj(companyDto.getCnpj(),companyDto.getCep(),companyDto.getNome_empresa());
+        return "Cadastro da empresa atualizado.";
+    }
+
+    @Transactional
+    @Override
+    public Object updateByName(String nome_empresa, CompanyDto companyDto) {
+        Optional<CompanyModel> companyModelOptional=findByName(nome_empresa);
+        if (companyModelOptional.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nome da empresa nao encontrado.");
+        }
+        companyRepository.updateByName(companyDto.getNome_empresa(),companyDto.getCnpj(),companyDto.getCep());
+        return "Cadastro da empresa atualizado.";
     }
 }
 
