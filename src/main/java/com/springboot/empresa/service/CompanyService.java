@@ -21,9 +21,19 @@ public interface CompanyService {
 
     Optional<CompanyModel> findByName(String nome_empresa);
 
+    Optional<CompanyModel> findByCnpj(String cnpj);
+
     void delete(CompanyModel companyModel);
 
     Object updateById(UUID id, CompanyDto companyDto);
 
     Object deleteById(UUID id);
+
+    Object deleteByNome_empresa(String nome_empresa);
+
+    Object deleteByCnpj(String cnpj);
+
+    Object updateByCnpj(String cnpj, CompanyDto companyDto);
+
+    Object updateByName(String nomeEmpresa, CompanyDto companyDto);
 }
